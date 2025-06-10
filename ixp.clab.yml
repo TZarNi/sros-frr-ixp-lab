@@ -2,7 +2,7 @@ name: ixp
 
 topology:
   nodes:
-  peer1:
+    peer1:
       kind: linux
       image: quay.io/frrouting/frr:8.4.1
       binds:

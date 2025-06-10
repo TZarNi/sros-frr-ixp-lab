@@ -4,7 +4,7 @@ $\small{\textsf{A containerlab-based lab designed to offer hands-on experience w
 
 $\small{\textsf{Lab documentation is available at below link}}$
 ```yaml
-<https://containerlab.dev/lab-examples/peering-lab/>
+https://containerlab.dev/lab-examples/peering-lab/
 ```
 ## Setup
 

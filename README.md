@@ -131,7 +131,7 @@ protocol bgp AS64502 from PEERS {
 ```
 + $\small{\textsf{In a BIRD configuration, protocol device {} is a crucial section that doesn't define a routing protocol itself,}}$
   $\small{\textsf{but rather serves as a service to gather information about network interfaces from the kernel.}}$ 
-
++ $\small{\textsf{initial bird config မှာ import all, export all သတ်မှတ်ထားတာကြောင့် peer ၂ ခုကြား route တွေအားလုံး ဖလှယ်ထားတာ တွေ့ရမယ်။}}$
 ## Checking BGP routes
 $\small{\textsf{clab-ixp-peer1}}$
 ```yaml
@@ -161,6 +161,35 @@ B>* 10.0.0.2/32 [20/0] via 192.168.0.2, eth1, weight 1, 00:04:34
 C>* 172.20.20.0/24 is directly connected, eth0, 00:04:37
 C>* 192.168.0.0/24 is directly connected, eth1, 00:04:36
 ```
+$\small{\textsf{clab-ixp-peer2}}$
+```yaml
+peer2# show ip bgp summary 
+
+IPv4 Unicast Summary (VRF default):
+BGP router identifier 10.0.0.2, local AS number 64502 vrf-id 0
+BGP table version 2
+RIB entries 3, using 576 bytes of memory
+Peers 2, using 1434 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+192.168.0.3     4      64503      1220      1222        0    0    0 01:00:51            1        2 N/A
+192.168.0.4     4      64503      1393      1222        0    0    0 01:00:51            1        2 N/A
+Total number of neighbors 2
+
+peer2# show ip route
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+K>* 0.0.0.0/0 [0/0] via 172.20.20.1, eth0, 01:00:56
+B>* 10.0.0.1/32 [20/0] via 192.168.0.1, eth1, weight 1, 01:00:53
+C>* 10.0.0.2/32 is directly connected, lo, 01:00:55
+C>* 172.20.20.0/24 is directly connected, eth0, 01:00:56
+C>* 192.168.0.0/24 is directly connected, eth1, 01:00:55
+```
 $\small{\textsf{clab-ixp-rs2}}$
 ```yaml
 bird> show status 
@@ -182,4 +211,8 @@ Table master4:
  via 192.168.0.1 on eth1
                      unicast [AS64502 14:51:36.035 from 192.168.0.2] (100) [AS64501i]
  via 192.168.0.1 on eth1
+```
+$\small{\textsf{bird version 2.0 user manual ကို ရည်ညွှန်းပြီး လုပ်ဆောင်မယ်။}}$
+```yaml
+https://bird.network.cz/?get_doc&f=bird.html&v=20
 ```

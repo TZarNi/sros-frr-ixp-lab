@@ -1,6 +1,6 @@
 # IXP Lab (FRR and BIRD/OpenBGPd as Route Servers)
 
-$\small{\textsf{Nokia sr os မှာ license file အခက်အခဲကြောင့် cisco ios ကို အသုံးပြုထားတယ်။}}$
+$\small{\textsf{Nokia sr os မှာ license file အခက်အခဲကြောင့် FRR ကိုပဲ အသုံးပြုထားတယ်။}}$
 
 $\small{\textsf{A containerlab-based lab designed to offer hands-on experience with IXP technologies and best practices.}}$
 

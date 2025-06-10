@@ -27,13 +27,16 @@ name: ixp
 topology:
   nodes:
     peer1:
-      kind: cisco_c8000v
-      image: vrnetlab/cisco_c8000v:17.09.04a
+      kind: linux
+      image: quay.io/frrouting/frr:8.4.1
+      binds:
+        - configs/frr1.conf:/etc/frr/frr.conf
+        - configs/frr-daemons.cfg:/etc/frr/daemons
     peer2:
       kind: linux
       image: quay.io/frrouting/frr:8.4.1
       binds:
-        - configs/frr.conf:/etc/frr/frr.conf
+        - configs/frr2.conf:/etc/frr/frr.conf
         - configs/frr-daemons.cfg:/etc/frr/daemons
     rs1: # route server #1
       kind: linux
@@ -53,7 +56,7 @@ topology:
       kind: bridge
 
   links:
-    - endpoints: ["peer1:Gi2", "ixp-net:port1"]
+    - endpoints: ["peer1:eth1", "ixp-net:port1"]
     - endpoints: ["peer2:eth1", "ixp-net:port2"]
     - endpoints: ["rs1:eth1", "ixp-net:port3"]
     - endpoints: ["rs2:eth1", "ixp-net:port4"]
@@ -61,21 +64,6 @@ topology:
 $\small{\textsf{Start the lab}}$
 ```yaml
 containerlab deploy --topo ixp.clab.yml
-╭────────────────┬─────────────────────────────────┬────────────────────┬───────────────────╮
-│      Name      │            Kind/Image           │        State       │   IPv4/6 Address  │
-├────────────────┼─────────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-peer1 │ cisco_c8000v                    │ running            │ 172.20.20.3       │
-│                │ vrnetlab/cisco_c8000v:17.09.04a │ (health: starting) │ 3fff:172:20:20::3 │
-├────────────────┼─────────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-peer2 │ linux                           │ running            │ 172.20.20.2       │
-│                │ quay.io/frrouting/frr:8.4.1     │                    │ 3fff:172:20:20::2 │
-├────────────────┼─────────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-rs1   │ linux                           │ running            │ 172.20.20.4       │
-│                │ quay.io/openbgpd/openbgpd:7.9   │ (health: starting) │ 3fff:172:20:20::4 │
-├────────────────┼─────────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-rs2   │ linux                           │ running            │ 172.20.20.5       │
-│                │ ghcr.io/srl-labs/bird:2.13      │                    │ 3fff:172:20:20::5 │
-╰────────────────┴─────────────────────────────────┴────────────────────┴───────────────────╯
 ```
 $\small{\textsf{node တွေကို access လုပ်ဖို့}}$
 ```yaml

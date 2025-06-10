@@ -58,7 +58,7 @@ topology:
     - endpoints: ["rs1:eth1", "ixp-net:port3"]
     - endpoints: ["rs2:eth1", "ixp-net:port4"]
 ```
-$\small{\textsf{start the lab}}$
+$\small{\textsf{Start the lab}}$
 ```yaml
 containerlab deploy --topo ixp.clab.yml
 ╭────────────────┬─────────────────────────────────┬────────────────────┬───────────────────╮
@@ -76,5 +76,13 @@ containerlab deploy --topo ixp.clab.yml
 │ clab-ixp-rs2   │ linux                           │ running            │ 172.20.20.5       │
 │                │ ghcr.io/srl-labs/bird:2.13      │                    │ 3fff:172:20:20::5 │
 ╰────────────────┴─────────────────────────────────┴────────────────────┴───────────────────╯
+```
+$\small{\textsf{node တွေကို access လုပ်ဖို့}}$
+```yaml
+ssh admin@clab-ixp-peer1
+password: admin
+docker exec -it clab-ixp-peer2 vtysh
+docker exec -it clab-ixp-rs1 ash
+docker exec -it clab-ixp-rs2 birdc
 ```
 

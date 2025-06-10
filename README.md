@@ -87,6 +87,11 @@ docker exec -it clab-ixp-peer2 vtysh
 docker exec -it clab-ixp-rs1 ash
 docker exec -it clab-ixp-rs2 birdc
 ```
+## BIRD Config
+```yaml
+In a BIRD configuration, protocol device {} is a crucial section that doesn't define a routing protocol itself,
+but rather serves as a service to gather information about network interfaces from the kernel. 
+```
 ## Checking BGP routes
 $\small{\textsf{clab-ixp-peer1}}$
 ```yaml

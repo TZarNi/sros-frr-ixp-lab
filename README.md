@@ -26,7 +26,7 @@ name: ixp
 
 topology:
   nodes:
-     peer1:
+    peer1:
       kind: cisco_c8000v
       image: vrnetlab/cisco_c8000v:17.09.04a
     peer2:

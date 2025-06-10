@@ -2,16 +2,17 @@ name: ixp
 
 topology:
   nodes:
-    peer1:
-      kind: vr-nokia_sros
-      image: sros:23.3.R1
-      license: license.key
-      startup-config: configs/sros.partial.cfg
+  peer1:
+      kind: linux
+      image: quay.io/frrouting/frr:8.4.1
+      binds:
+        - configs/frr1.conf:/etc/frr/frr.conf
+        - configs/frr-daemons.cfg:/etc/frr/daemons
     peer2:
       kind: linux
       image: quay.io/frrouting/frr:8.4.1
       binds:
-        - configs/frr.conf:/etc/frr/frr.conf
+        - configs/frr2.conf:/etc/frr/frr.conf
         - configs/frr-daemons.cfg:/etc/frr/daemons
     rs1: # route server #1
       kind: linux

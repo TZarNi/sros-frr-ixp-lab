@@ -216,3 +216,11 @@ $\small{\textsf{bird version 2.0 user manual ကို ရည်ညွှန်�
 ```yaml
 https://bird.network.cz/?get_doc&f=bird.html&v=20
 ```
+## BIRD Architecture
+
+$\small{\textsf{The heart of BIRD is a routing table. BIRD has several independent routing tables; each of them contains routes of exactly one nettype.}}$
+$\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
+$\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
+
+
+

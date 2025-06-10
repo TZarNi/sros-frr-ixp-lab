@@ -18,3 +18,8 @@ sudo apt install bridge-utils
 sudo brctl addbr ixp-net
 ip link show
 ```
+$\small{\textsf{start the lab}}$
+```yaml
+cd sros-frr-ixp-lab
+containerlab deploy --topo ixp.clab.yml
+```

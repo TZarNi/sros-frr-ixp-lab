@@ -1,4 +1,4 @@
-# IXP Lab with Cisco ios, FRR and BIRD/OpenBGPd as Route Servers
+# IXP Lab (FRR and BIRD/OpenBGPd as Route Servers)
 
 $\small{\textsf{Nokia sr os မှာ license file အခက်အခဲကြောင့် cisco ios ကို အသုံးပြုထားတယ်။}}$
 
@@ -64,11 +64,25 @@ topology:
 $\small{\textsf{Start the lab}}$
 ```yaml
 containerlab deploy --topo ixp.clab.yml
+╭────────────────┬───────────────────────────────┬────────────────────┬───────────────────╮
+│      Name      │           Kind/Image          │        State       │   IPv4/6 Address  │
+├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
+│ clab-ixp-peer1 │ linux                         │ running            │ 172.20.20.5       │
+│                │ quay.io/frrouting/frr:8.4.1   │                    │ 3fff:172:20:20::5 │
+├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
+│ clab-ixp-peer2 │ linux                         │ running            │ 172.20.20.4       │
+│                │ quay.io/frrouting/frr:8.4.1   │                    │ 3fff:172:20:20::4 │
+├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
+│ clab-ixp-rs1   │ linux                         │ running            │ 172.20.20.3       │
+│                │ quay.io/openbgpd/openbgpd:7.9 │ (health: starting) │ 3fff:172:20:20::3 │
+├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
+│ clab-ixp-rs2   │ linux                         │ running            │ 172.20.20.2       │
+│                │ ghcr.io/srl-labs/bird:2.13    │                    │ 3fff:172:20:20::2 │
+╰────────────────┴───────────────────────────────┴────────────────────┴───────────────────╯
 ```
 $\small{\textsf{node တွေကို access လုပ်ဖို့}}$
 ```yaml
-ssh admin@clab-ixp-peer1
-password: admin
+docker exec -it clab-ixp-peer1 vtysh
 docker exec -it clab-ixp-peer2 vtysh
 docker exec -it clab-ixp-rs1 ash
 docker exec -it clab-ixp-rs2 birdc

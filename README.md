@@ -89,9 +89,49 @@ docker exec -it clab-ixp-rs2 birdc
 ```
 ## BIRD Config
 ```yaml
-In a BIRD configuration, protocol device {} is a crucial section that doesn't define a routing protocol itself,
-but rather serves as a service to gather information about network interfaces from the kernel. 
+# https://nsrc.org/workshops/2021/riso-pern-apan51/networking/routing-security/en/labs/ixp.html
+router id 192.168.0.4;
+define myas = 64503;
+
+protocol device { }
+
+####
+# Protocol template
+###
+template bgp PEERS {
+  local as myas;
+  rs client;
+}
+
+
+####
+# Configuration of BGP peer follows
+###
+
+### AS64501 - Client 1 - SR OS
+protocol bgp AS64501 from PEERS {
+  description "Client 1";
+  neighbor 192.168.0.1 as 64501;
+  ipv4 {
+    import all;
+    export all;
+  };
+}
+
+
+### AS64502 - Client 2 - FRR
+protocol bgp AS64502 from PEERS {
+  description "Client 2";
+  neighbor 192.168.0.2 as 64502;
+  ipv4 {
+    import all;
+    export all;
+  };
+}
 ```
++ $\small{\textsf{In a BIRD configuration, protocol device {} is a crucial section that doesn't define a routing protocol itself,}}$
+  $\small{\textsf{but rather serves as a service to gather information about network interfaces from the kernel.}}$ 
+
 ## Checking BGP routes
 $\small{\textsf{clab-ixp-peer1}}$
 ```yaml
@@ -123,6 +163,15 @@ C>* 192.168.0.0/24 is directly connected, eth1, 00:04:36
 ```
 $\small{\textsf{clab-ixp-rs2}}$
 ```yaml
+bird> show status 
+BIRD 2.13
+Router ID is 192.168.0.4
+Hostname is rs2
+Current server time is 2025-06-10 15:42:05.942
+Last reboot on 2025-06-10 14:51:33.142
+Last reconfiguration on 2025-06-10 14:51:33.142
+Daemon is up and running
+
 bird> show route
 Table master4:
 10.0.0.2/32          unicast [AS64502 14:51:35.953] * (100) [AS64502i]

@@ -241,45 +241,27 @@ if (65535, 65281) ~ bgp_community then {
         import where bgp_in_v4(61189);
         export where bgp_out(61189);
         }
+}
+```
+## BIRD filter
 
-### AS30 - Group 3
-filter bgp_in_AS30
+$\small{\textsf{A filter has a header, a list of local variables, and a body. The header consists of the filter keyword followed by a (unique) name of filter.}}$
+$\small{\textsf{The list of local variables consists of type name; pairs where each pair declares one local variable.}}$
+```yaml
+filter bgp_in_AS64501
 prefix set allnet;
 int set allas;
 {
   if (prefix_is_bogon()) then reject;
-  if (bgp_path.first != 30 ) then reject;
+  if (bgp_path.first != 64501 ) then reject;
 
-  allas = [ 30, 135535 ];
+  allas = [ 64501 ];
   if ! (bgp_path.last ~ allas) then reject;
 
-  allnet = [ 100.68.3.0/24, 100.68.103.0/24, 61.45.250.0/24,
-             2001:DB8:3::/48, 2001:DB8:103::/48 ];
+  allnet = [ 10.0.0.1/32 ];
   if ! (net ~ allnet) then reject;
 
   accept;
-}
-
-protocol bgp R30v4 from PEERS {
-  description "Group 3 - IPv4";
-  neighbor 100.127.1.3 as 30;
-  password "ixp-rs";
-  ipv4 {
-    import filter bgp_in_AS30;
-    import limit 10000 action restart;
-    export all;
-  };
-}
-
-protocol bgp R30v6 from PEERS {
-  description "Group 3 - IPv6";
-  neighbor 2001:DB8:FFFF:1::3 as 30;
-  password "ixp-rs";
-  ipv6 {
-    import filter bgp_in_AS30;
-    import limit 10000 action restart;
-    export all;
-  };
 }
 ```
 $\small{\textsf{net; (Network):}}$

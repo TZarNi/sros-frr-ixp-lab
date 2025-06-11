@@ -212,17 +212,18 @@ Table master4:
                      unicast [AS64502 14:51:36.035 from 192.168.0.2] (100) [AS64501i]
  via 192.168.0.1 on eth1
 ```
+
+## BIRD Architecture
+
 $\small{\textsf{bird version 2.0 user manual ကို ရည်ညွှန်းပြီး လုပ်ဆောင်မယ်။}}$
 ```yaml
 https://bird.network.cz/?get_doc&f=bird.html&v=20
 ```
-## BIRD Architecture
-
 $\small{\textsf{The heart of BIRD is a routing table. BIRD has several independent routing tables; each of them contains routes of exactly one nettype.}}$
 $\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
 $\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
 
-$\small{\textsf{protocol bgp}}$
+## Protocol
 ```yaml
 protocol bgp elkdata2_v4 from rs_clients_v4 {
     description "Elkdata";
@@ -243,7 +244,7 @@ if (65535, 65281) ~ bgp_community then {
         }
 }
 ```
-## BIRD filter
+## filter
 
 $\small{\textsf{A filter has a header, a list of local variables, and a body. The header consists of the filter keyword followed by a (unique) name of filter.}}$
 $\small{\textsf{The list of local variables consists of type name; pairs where each pair declares one local variable.}}$

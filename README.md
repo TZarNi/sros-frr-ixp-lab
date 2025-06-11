@@ -232,7 +232,9 @@ $\small{\textsf{These routing tables are not kernel forwarding tables. No forwar
 | 3                | 0:47200         | Do not advertise to any peer  |
 | 4                | 47200:47200     | Advertise to all peers        |
 
-define myas = 64503;
+####
+# Function
+###
 function bgp_out(int peeras)
 {
  if ! (source = RTS_BGP ) then return false;
@@ -241,12 +243,19 @@ function bgp_out(int peeras)
  if (0, myas) ~ bgp_community then return false;
  return true;
 }
-protocol bgp R25192x1 {
- local as myas;
- neighbor 194.50.100.13 as 25192;
- import where bgp_in(25192);
- export where bgp_out(25192);
- rs client;
+
+####
+# Configuration of BGP peer follows
+###
+
+### AS64501 - Client 1 - SR OS
+protocol bgp AS64501 from PEERS {
+  description "Client 1";
+  neighbor 192.168.0.1 as 64501;
+  ipv4 {
+    import all;
+    export where bgp_out(64501);
+  };
 }
 ```
 $\small{\textsf{RTS_BGP:}}$

@@ -1,4 +1,4 @@
-# IXP Lab (FRR and BIRD/OpenBGPd as Route Servers)
+# IXP Lab (FRR and BIRD as Route Servers)
 
 $\small{\textsf{Nokia sr os မှာ license file အခက်အခဲကြောင့် FRR ကိုပဲ အသုံးပြုထားတယ်။}}$
 

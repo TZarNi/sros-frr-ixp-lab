@@ -251,10 +251,9 @@ protocol bgp AS64502 from PEERS {
 $\small{\textsf{A filter has a header, a list of local variables, and a body. The header consists of the filter keyword followed by a (unique) name of filter.}}$
 $\small{\textsf{The list of local variables consists of type name; pairs where each pair declares one local variable.}}$
 ```yaml
-import filter accept_community {
+filter accept_community {
          community 65000:10;
      }
-}
 ```
 $\small{\textsf{net; (Network):}}$
 $\small{\textsf{This term within BIRD's configuration or logging indicates a network route.}}$

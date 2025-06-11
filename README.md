@@ -223,29 +223,35 @@ $\small{\textsf{The heart of BIRD is a routing table. BIRD has several independe
 $\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
 $\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
 
-## Protocol
+## function
 ```yaml
-### AS64501 - Client 1 - SR OS
-protocol bgp AS64501 from PEERS {
-  description "Client 1";
-  neighbor 192.168.0.1 as 64501;
-  ipv4 {
-    import filter accept_community;
-    export filter reject_community;
-  };
+| Evaluation order |   Community     | Action                        |
+|------------------|-----------------|-------------------------------|
+| 1                |  0:<peer-as>    | Do not advertise to <peer-as> |
+| 2                | 47200:<peer-as> | Advertise to <peer-as>        |
+| 3                | 0:47200         | Do not advertise to any peer  |
+| 4                | 47200:47200     | Advertise to all peers        |
+
+define myas = 64503;
+function bgp_out(int peeras)
+{
+ if ! (source = RTS_BGP ) then return false;
+ if (0,peeras) ~ bgp_community then return false;
+ if (myas,peeras) ~ bgp_community then return true;
+ if (0, myas) ~ bgp_community then return false;
+ return true;
 }
-
-
-### AS64502 - Client 2 - FRR
-protocol bgp AS64502 from PEERS {
-  description "Client 2";
-  neighbor 192.168.0.2 as 64502;
-  ipv4 {
-    import filter accept_community;
-    export filter reject_community;
-  };
+protocol bgp R25192x1 {
+ local as myas;
+ neighbor 194.50.100.13 as 25192;
+ import where bgp_in(25192);
+ export where bgp_out(25192);
+ rs client;
 }
 ```
+$\small{\textsf{RTS_BGP:}}$
+$\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS_BGP, BIRD knows that the route was received from another BGP router.}}$
+
 ## filter
 
 $\small{\textsf{A filter has a header, a list of local variables, and a body. The header consists of the filter keyword followed by a (unique) name of filter.}}$

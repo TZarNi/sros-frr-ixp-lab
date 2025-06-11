@@ -241,6 +241,46 @@ if (65535, 65281) ~ bgp_community then {
         import where bgp_in_v4(61189);
         export where bgp_out(61189);
         }
+
+### AS30 - Group 3
+filter bgp_in_AS30
+prefix set allnet;
+int set allas;
+{
+  if (prefix_is_bogon()) then reject;
+  if (bgp_path.first != 30 ) then reject;
+
+  allas = [ 30, 135535 ];
+  if ! (bgp_path.last ~ allas) then reject;
+
+  allnet = [ 100.68.3.0/24, 100.68.103.0/24, 61.45.250.0/24,
+             2001:DB8:3::/48, 2001:DB8:103::/48 ];
+  if ! (net ~ allnet) then reject;
+
+  accept;
+}
+
+protocol bgp R30v4 from PEERS {
+  description "Group 3 - IPv4";
+  neighbor 100.127.1.3 as 30;
+  password "ixp-rs";
+  ipv4 {
+    import filter bgp_in_AS30;
+    import limit 10000 action restart;
+    export all;
+  };
+}
+
+protocol bgp R30v6 from PEERS {
+  description "Group 3 - IPv6";
+  neighbor 2001:DB8:FFFF:1::3 as 30;
+  password "ixp-rs";
+  ipv6 {
+    import filter bgp_in_AS30;
+    import limit 10000 action restart;
+    export all;
+  };
+}
 ```
 $\small{\textsf{net; (Network):}}$
 $\small{\textsf{This term within BIRD's configuration or logging indicates a network route.}}$

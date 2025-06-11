@@ -233,6 +233,14 @@ protocol bgp elkdata2_v4 from rs_clients_v4 {
         export where bgp_out(61189);
     };
 };
+
+if (65535, 65281) ~ bgp_community then {
+            print fname, net, " has NO-EXPORT community missing. Adding the NO-EXPORT community.";
+            bgp_community.add((65535, 65281));
+       ipv4 {
+        import where bgp_in_v4(61189);
+        export where bgp_out(61189);
+        }
 ```
 $\small{\textsf{net; (Network):}}$
 $\small{\textsf{This term within BIRD's configuration or logging indicates a network route.}}$

@@ -225,23 +225,25 @@ $\small{\textsf{These routing tables are not kernel forwarding tables. No forwar
 
 ## Protocol
 ```yaml
-protocol bgp elkdata2_v4 from rs_clients_v4 {
-    description "Elkdata";
-    neighbor 213.184.52.54 as 61189;
+### AS64501 - Client 1 - SR OS
+protocol bgp AS64501 from PEERS {
+  description "Client 1";
+  neighbor 192.168.0.1 as 64501;
+  ipv4 {
+    import filter accept_community;
+    export filter reject_community;
+  };
+}
 
-    ipv4 {
-        import where bgp_in_v4(61189);
-        export where bgp_out(61189);
-    };
-};
 
-if (65535, 65281) ~ bgp_community then {
-            print fname, net, " has NO-EXPORT community missing. Adding the NO-EXPORT community.";
-            bgp_community.add((65535, 65281));
-       ipv4 {
-        import where bgp_in_v4(61189);
-        export where bgp_out(61189);
-        }
+### AS64502 - Client 2 - FRR
+protocol bgp AS64502 from PEERS {
+  description "Client 2";
+  neighbor 192.168.0.2 as 64502;
+  ipv4 {
+    import filter accept_community;
+    export filter reject_community;
+  };
 }
 ```
 ## filter
@@ -249,20 +251,9 @@ if (65535, 65281) ~ bgp_community then {
 $\small{\textsf{A filter has a header, a list of local variables, and a body. The header consists of the filter keyword followed by a (unique) name of filter.}}$
 $\small{\textsf{The list of local variables consists of type name; pairs where each pair declares one local variable.}}$
 ```yaml
-filter bgp_in_AS64501
-prefix set allnet;
-int set allas;
-{
-  if (prefix_is_bogon()) then reject;
-  if (bgp_path.first != 64501 ) then reject;
-
-  allas = [ 64501 ];
-  if ! (bgp_path.last ~ allas) then reject;
-
-  allnet = [ 10.0.0.1/32 ];
-  if ! (net ~ allnet) then reject;
-
-  accept;
+import filter accept_community {
+         community 65000:10;
+     }
 }
 ```
 $\small{\textsf{net; (Network):}}$

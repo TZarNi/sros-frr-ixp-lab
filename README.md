@@ -222,5 +222,24 @@ $\small{\textsf{The heart of BIRD is a routing table. BIRD has several independe
 $\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
 $\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
 
+$\small{\textsf{protocol bgp}}$
+```yaml
+protocol bgp elkdata2_v4 from rs_clients_v4 {
+    description "Elkdata";
+    neighbor 213.184.52.54 as 61189;
+
+    ipv4 {
+        import where bgp_in_v4(61189);
+        export where bgp_out(61189);
+    };
+};
+```
+$\small{\textsf{net; (Network):}}$
+$\small{\textsf{This term within BIRD's configuration or logging indicates a network route.}}$
+$\small{\textsf{It specifies a range of IP addresses that traffic should be forwarded to based on the configured route.}}$
+
+$\small{\textsf{dead; (Dead Route):}}$
+$\small{\textsf{This term signifies that a route has been withdrawn, is no longer valid, or the network is unreachable.}}$
+$\small{\textsf{It's a way for BIRD to signal that a specific route is no longer functional and should not be used for forwarding traffic.}}$
 
 

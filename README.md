@@ -189,15 +189,19 @@ $\small{\textsf{The heart of BIRD is a routing table. BIRD has several independe
 $\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
 $\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
 
-## function
+## Supported Communities
 ```yaml
-| Evaluation order |   Community     | Action                        |
-|------------------|-----------------|-------------------------------|
-| 1                |  0:<peer-as>    | Do not advertise to <peer-as> |
-| 2                | 47200:<peer-as> | Advertise to <peer-as>        |
-| 3                | 0:47200         | Do not advertise to any peer  |
-| 4                | 47200:47200     | Advertise to all peers        |
-
+|   Community     | Action                        |
+|-----------------|-------------------------------|
+|  0:<peer-as>    | Do not advertise to <peer-as> |
+| 64503:<peer-as> | Advertise to <peer-as>        |
+| 0:64503         | Do not advertise to any peer  |
+| 64503:64503     | Advertise to all peers        |
+| 9654:64503      | Advertise to Akamai           |
+```
+## Function to filter routes
+$\small{\textsf{AS64501}}$
+```yaml
 ############
 # Function #
 ############

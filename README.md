@@ -203,7 +203,7 @@ $\small{\textsf{IX နဲ့ ချိတ်ဆက်မယ့် peer မျာ
 | 9654:64503      | Advertise to Akamai           |
 ```
 ## Function
-
+$\small{\textsf{BIRD config}}$
 ```yaml
 ############
 # Function #
@@ -236,16 +236,64 @@ protocol bgp AS64502 from PEERS {
   description "Client 2";
   neighbor 192.168.0.2 as 64502;
   ipv4 {
-    import all;
-    export none;
+    import none;
+    export all;
   };
 }
 ```
+$\small{\textsf{AS64501 config}}$
 ```yaml
-bird>  show route
+route-map rmap permit 10
+match ip address prefix-list pl1
+set community 64503:64501
+!
+router bgp 64501
+  bgp router-id 10.0.0.1
+  no bgp default ipv4-unicast
+  bgp bestpath as-path multipath-relax
+  neighbor 192.168.0.3 remote-as 64503
+  neighbor 192.168.0.4 remote-as 64503
+  !
+  address-family ipv4 unicast
+    network 10.0.0.1/32
+    neighbor 192.168.0.3 activate
+    neighbor 192.168.0.4 route-map rmap out
+    neighbor 192.168.0.4 activate
+  exit-address-family
+```
+```yaml
+peer1# show ip route
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+K>* 0.0.0.0/0 [0/0] via 172.20.20.1, eth0, 00:00:40
+C>* 10.0.0.1/32 is directly connected, lo, 00:00:40
+C>* 172.20.20.0/24 is directly connected, eth0, 00:00:40
+C>* 192.168.0.0/24 is directly connected, eth1, 00:00:40
+
+peer2# show ip route
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+K>* 0.0.0.0/0 [0/0] via 172.20.20.1, eth0, 00:00:45
+B>* 10.0.0.1/32 [20/0] via 192.168.0.1, eth1, weight 1, 00:00:11
+C>* 10.0.0.2/32 is directly connected, lo, 00:00:45
+C>* 172.20.20.0/24 is directly connected, eth0, 00:00:45
+C>* 192.168.0.0/24 is directly connected, eth1, 00:00:45
+
+bird> show route
 Table master4:
-10.0.0.2/32          unicast [AS64502 13:33:21.311] * (100) [AS64502i]
-         via 192.168.0.2 on eth1
+10.0.0.1/32          unicast [AS64501 14:45:33.846] * (100) [AS64501i]
+	via 192.168.0.1 on eth1
+
 ```
 $\small{\textsf{RTS BGP:}}$
 $\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$
@@ -255,23 +303,7 @@ $\small{\textsf{Filters are used to control both import and export of routes.}}$
 
 $\small{\textsf{သတ်မှတ်ထားတဲ့ function အရ BIRD က အောက်ပါအတိုင်း လုပ်ဆောင်တယ်။}}$
 + $\small{\textsf{ AS64502 က route အားလုံးကို main table သို့ import လုပ်တယ်။}}$
-+ $\small{\textsf{ community တန်ဖိုးမပါတဲ့ route တွေကို import export မလုပ်တာ တွေ့ရတယ်။}}$
 
-## filter
 
-$\small{\textsf{A filter has a header, a list of local variables, and a body. The header consists of the filter keyword followed by a (unique) name of filter.}}$
-$\small{\textsf{The list of local variables consists of type name; pairs where each pair declares one local variable.}}$
-```yaml
-filter accept_community {
-         community 65000:10;
-     }
-```
-$\small{\textsf{net; (Network):}}$
-$\small{\textsf{This term within BIRD's configuration or logging indicates a network route.}}$
-$\small{\textsf{It specifies a range of IP addresses that traffic should be forwarded to based on the configured route.}}$
-
-$\small{\textsf{dead; (Dead Route):}}$
-$\small{\textsf{This term signifies that a route has been withdrawn, is no longer valid, or the network is unreachable.}}$
-$\small{\textsf{It's a way for BIRD to signal that a specific route is no longer functional and should not be used for forwarding traffic.}}$
 
 

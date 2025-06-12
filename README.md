@@ -76,7 +76,8 @@ docker exec -it clab-ixp-peer1 vtysh
 docker exec -it clab-ixp-peer2 vtysh
 docker exec -it clab-ixp-rs2 birdc
 ```
-## BIRD Config (export all, import all)
+## BIRD Config
+$\small{\textsf{import all, export all}}$
 ```yaml
 # https://nsrc.org/workshops/2021/riso-pern-apan51/networking/routing-security/en/labs/ixp.html
 router id 192.168.0.4;

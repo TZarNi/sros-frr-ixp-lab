@@ -39,7 +39,7 @@ topology:
       binds:
         - configs/frr2.conf:/etc/frr/frr.conf
         - configs/frr-daemons.cfg:/etc/frr/daemons
-    rs2: # route server #2
+    rs: # route server 
       kind: linux
       image: ghcr.io/srl-labs/bird:2.13
       binds:
@@ -52,7 +52,7 @@ topology:
   links:
     - endpoints: ["peer1:eth1", "ixp-net:port1"]
     - endpoints: ["peer2:eth1", "ixp-net:port2"]
-    - endpoints: ["rs2:eth1", "ixp-net:port4"]
+    - endpoints: ["rs:eth1", "ixp-net:port4"]
 ```
 $\small{\textsf{Start the lab}}$
 ```yaml
@@ -66,7 +66,7 @@ containerlab deploy --topo ixp.clab.yml
 │ clab-ixp-peer2 │ linux                       │ running │ 172.20.20.2       │
 │                │ quay.io/frrouting/frr:8.4.1 │         │ 3fff:172:20:20::2 │
 ├────────────────┼─────────────────────────────┼─────────┼───────────────────┤
-│ clab-ixp-rs2   │ linux                       │ running │ 172.20.20.4       │
+│ clab-ixp-rs    │ linux                       │ running │ 172.20.20.4       │
 │                │ ghcr.io/srl-labs/bird:2.13  │         │ 3fff:172:20:20::4 │
 ╰────────────────┴─────────────────────────────┴─────────┴───────────────────╯
 ```
@@ -74,7 +74,7 @@ $\small{\textsf{node တွေကို access လုပ်ဖို့}}$
 ```yaml
 docker exec -it clab-ixp-peer1 vtysh
 docker exec -it clab-ixp-peer2 vtysh
-docker exec -it clab-ixp-rs2 birdc
+docker exec -it clab-ixp-rs birdc
 ```
 ## BIRD Architecture
 
@@ -91,7 +91,7 @@ $\small{\textsf{import all, export all}}$
 ```yaml
 # https://nsrc.org/workshops/2021/riso-pern-apan51/networking/routing-security/en/labs/ixp.html
 router id 192.168.0.4;
-define myas = 64503;
+define myas = 64504;
 
 protocol device { }
 
@@ -154,7 +154,7 @@ $\small{\textsf{import none, export none}}$
 ```yaml
 # https://nsrc.org/workshops/2021/riso-pern-apan51/networking/routing-security/en/labs/ixp.html
 router id 192.168.0.4;
-define myas = 64503;
+define myas = 64504;
 
 protocol device { }
 
@@ -197,13 +197,17 @@ $\small{\textsf{IX နဲ့ ချိတ်ဆက်မယ့် peer မျာ
 |   Community     | Action                        |
 |-----------------|-------------------------------|
 |  0:<peer-as>    | Do not advertise to <peer-as> |
-| 64503:<peer-as> | Advertise to <peer-as>        |
-| 0:64503         | Do not advertise to any peer  |
-| 64503:64503     | Advertise to all peers        |
-| 9654:64503      | Advertise to Akamai           |
+| 64504:<peer-as> | Advertise to <peer-as>        |
+| 0:64504         | Do not advertise to any peer  |
+| 64504:64504     | Advertise to all peers        |
+| 9654:64504      | Advertise to Akamai           |
 ```
 ## Function
-$\small{\textsf{အောက်ပါ setup အတွက် BIRD function ကို သုံးပြီး config လုပ်ကြည့်မယ်။}}$<br>
+$\small{\textsf{အောက်ပါ setup အတွက် BIRD function ကို သုံးပြီး config လုပ်ကြည့်မယ်။}}$
+
+![peering drawio (1)](https://github.com/user-attachments/assets/9265474e-cedc-4bed-b586-d3a0ced5ee27)
+
+
 + $\small{\textsf{clab-ixp-peer1 သည် clab-ixp-peer2 နဲ့ peer ဖြစ်ချင်တယ်။}}$<br>
 + $\small{\textsf{clab-ixp-peer2 သည် akamai နဲ့ peer ဖြစ်ချင်တယ်။}}$<br>
 + $\small{\textsf{clab-ixp-peer3 သည် clab-ixp-peer1, clab-ixp-peer2, akamai အားလုံးနဲ့ peer ဖြစ်ချင်တယ်။}}$<br>
@@ -232,7 +236,7 @@ protocol bgp AS64501 from PEERS {
   neighbor 192.168.0.1 as 64501;
   ipv4 {
     import where bgp_out(64501);
-    export none;
+    export where bgp_out(64502);
   };
 }
 
@@ -241,7 +245,17 @@ protocol bgp AS64502 from PEERS {
   description "Client 2";
   neighbor 192.168.0.2 as 64502;
   ipv4 {
-    import none;
+    import all;
+    export all;
+  };
+}
+
+### AS64503 - Client 3 - FRR ###
+protocol bgp AS64503 from PEERS {
+  description "Client 3";
+  neighbor 192.168.0.3 as 64503;
+  ipv4 {
+    import all;
     export all;
   };
 }
@@ -255,7 +269,7 @@ $\small{\textsf{clab-ixp-peer1 (AS64501) config}}$
 ```yaml
 route-map rmap permit 10
 match ip address prefix-list pl1
-set community 64503:64501
+set community 64504:64501
 !
 router bgp 64501
   bgp router-id 10.0.0.1

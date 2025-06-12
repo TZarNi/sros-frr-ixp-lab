@@ -245,7 +245,7 @@ protocol bgp AS64502 from PEERS {
 bird>  show route
 Table master4:
 10.0.0.2/32          unicast [AS64502 13:33:21.311] * (100) [AS64502i]
-	via 192.168.0.2 on eth1
+         via 192.168.0.2 on eth1
 ```
 $\small{\textsf{RTS BGP:}}$
 $\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$

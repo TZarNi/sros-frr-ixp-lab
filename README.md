@@ -203,7 +203,7 @@ $\small{\textsf{IX နဲ့ ချိတ်ဆက်မယ့် peer မျာ
 | 9654:64503      | Advertise to Akamai           |
 ```
 ## Function
-$\small{\textsf{AS64501}}$
+
 ```yaml
 ############
 # Function #
@@ -226,8 +226,8 @@ protocol bgp AS64501 from PEERS {
   description "Client 1";
   neighbor 192.168.0.1 as 64501;
   ipv4 {
-    import all;
-    export where bgp_out(64501);
+    import where bgp_out(64501);
+    export none;
   };
 }
 
@@ -236,10 +236,16 @@ protocol bgp AS64502 from PEERS {
   description "Client 2";
   neighbor 192.168.0.2 as 64502;
   ipv4 {
-    import none;
+    import all;
     export none;
   };
 }
+```
+```yaml
+bird>  show route
+Table master4:
+10.0.0.2/32          unicast [AS64502 13:33:21.311] * (100) [AS64502i]
+	via 192.168.0.2 on eth1
 ```
 $\small{\textsf{RTS BGP:}}$
 $\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$

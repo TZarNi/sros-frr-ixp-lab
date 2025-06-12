@@ -48,5 +48,5 @@ topology:
     - endpoints: ["peer2:eth1", "ixp-net:port2"]
     # - endpoints: ["rs1:eth1", "ixp-net:port3"]
     - endpoints: ["rs2:eth1", "ixp-net:port4"]
-    - endpoints: ["peer3:eth1", "ixp-net:port1"]
-    - endpoints: ["akamai:eth1", "ixp-net:port1"]
+    - endpoints: ["peer3:eth1", "ixp-net:port5"]
+    - endpoints: ["akamai:eth1", "ixp-net:port6"]

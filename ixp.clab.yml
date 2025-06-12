@@ -14,13 +14,13 @@ topology:
       binds:
         - configs/frr2.conf:/etc/frr/frr.conf
         - configs/frr-daemons.cfg:/etc/frr/daemons
-    rs1: # route server #1
-      kind: linux
-      image: quay.io/openbgpd/openbgpd:7.9
-      binds:
-        - configs/openbgpd.conf:/etc/bgpd/bgpd.conf
-      exec:
-        - "ip address add dev eth1 192.168.0.3/24"
+    # rs1: # route server #1
+    #   kind: linux
+    #   image: quay.io/openbgpd/openbgpd:7.9
+    #   binds:
+    #     - configs/openbgpd.conf:/etc/bgpd/bgpd.conf
+    #   exec:
+    #     - "ip address add dev eth1 192.168.0.3/24"
     rs2: # route server #2
       kind: linux
       image: ghcr.io/srl-labs/bird:2.13
@@ -34,5 +34,5 @@ topology:
   links:
     - endpoints: ["peer1:eth1", "ixp-net:port1"]
     - endpoints: ["peer2:eth1", "ixp-net:port2"]
-    - endpoints: ["rs1:eth1", "ixp-net:port3"]
+    # - endpoints: ["rs1:eth1", "ixp-net:port3"]
     - endpoints: ["rs2:eth1", "ixp-net:port4"]

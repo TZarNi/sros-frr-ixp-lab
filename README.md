@@ -252,7 +252,8 @@ $\small{\textsf{This RTS indicates that the route was learned from a BGP neighbo
 $\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into BIRD's internal routing table.}}$
 $\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$
 $\small{\textsf{Filters are used to control both import and export of routes.}}$ 
-$\small{\textsf{function အရ BIRD က အောက်ပါအတိုင်း လုပ်ဆောင်တယ်။}}$
+
+$\small{\textsf{သတ်မှတ်ထားတဲ့ function အရ BIRD က အောက်ပါအတိုင်း လုပ်ဆောင်တယ်။}}$
 + $\small{\textsf{ AS64502 က route အားလုံးကို main table သို့ import လုပ်တယ်။}}$
 + $\small{\textsf{ community တန်ဖိုးမပါတဲ့ route တွေကို import export မလုပ်တာ တွေ့ရတယ်။}}$
 

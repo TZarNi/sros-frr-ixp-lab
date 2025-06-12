@@ -93,7 +93,6 @@ template bgp PEERS {
   rs client;
 }
 
-
 #############################
 # Configuration of BGP peer #
 #############################
@@ -120,7 +119,9 @@ protocol bgp AS64502 from PEERS {
 + $\small{\textsf{In a BIRD configuration, protocol device {} is a crucial section that doesn't define a routing protocol itself,}}$
   $\small{\textsf{but rather serves as a service to gather information about network interfaces from the kernel.}}$ 
 + $\small{\textsf{initial bird config မှာ import all, export all သတ်မှတ်ထားတာကြောင့် peer ၂ ခုကြား route တွေအားလုံး ဖလှယ်ထားတာ တွေ့ရမယ်။}}$
-## Checking BGP routes
+
+$\small{\textsf{Checking BGP routes}}$
+
 $\small{\textsf{clab-ixp-peer1}}$
 ```yaml
 peer1#  show ip bgp summary 
@@ -139,7 +140,46 @@ bird> show protocol
 bird> show route protocol AS64501 # to check received routes from AS64501
 bird> show route protocol AS64502
 ```
+$\small{\textsf{import none, export none}}$
+```yaml
+# https://nsrc.org/workshops/2021/riso-pern-apan51/networking/routing-security/en/labs/ixp.html
+router id 192.168.0.4;
+define myas = 64503;
 
+protocol device { }
+
+#####################
+# Protocol template #
+#####################
+template bgp PEERS {
+  local as myas;
+  rs client;
+}
+
+
+#############################
+# Configuration of BGP peer #
+#############################
+
+### AS64501 - Client 1 - FRR ###
+protocol bgp AS64501 from PEERS {
+  description "Client 1";
+  neighbor 192.168.0.1 as 64501;
+  ipv4 {
+    import none;
+    export none;
+  };
+}
+### AS64502 - Client 2 - FRR ###
+protocol bgp AS64502 from PEERS {
+  description "Client 2";
+  neighbor 192.168.0.2 as 64502;
+  ipv4 {
+    import none;
+    export none;
+  };
+}
+```
 ## BIRD Architecture
 
 $\small{\textsf{bird version 2.0 user manual ကို ရည်ညွှန်းပြီး လုပ်ဆောင်မယ်။}}$

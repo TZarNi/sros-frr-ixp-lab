@@ -247,9 +247,9 @@ protocol bgp AS64502 from PEERS {
 }
 ```
 $\small{\textsf{RTS BGP:}}$
-$\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$
-$\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into BIRD's internal routing table.}}$
-$\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$
+$\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$<br>
+$\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into BIRD's internal routing table.}}$<br>
+$\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$<br>
 
 $\small{\textsf{clab-ixp-peer1 (AS64501) config}}$
 ```yaml

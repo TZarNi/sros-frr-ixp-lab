@@ -76,7 +76,7 @@ docker exec -it clab-ixp-peer1 vtysh
 docker exec -it clab-ixp-peer2 vtysh
 docker exec -it clab-ixp-rs2 birdc
 ```
-## BIRD Config
+## BIRD Config (export all, import all)
 ```yaml
 # https://nsrc.org/workshops/2021/riso-pern-apan51/networking/routing-security/en/labs/ixp.html
 router id 192.168.0.4;
@@ -158,9 +158,9 @@ $\small{\textsf{These routing tables are not kernel forwarding tables. No forwar
 | 3                | 0:47200         | Do not advertise to any peer  |
 | 4                | 47200:47200     | Advertise to all peers        |
 
-####
-# Function
-###
+############
+# Function #
+############
 function bgp_out(int peeras)
 {
  if ! (source = RTS_BGP ) then return false;
@@ -170,17 +170,27 @@ function bgp_out(int peeras)
  return true;
 }
 
-####
-# Configuration of BGP peer follows
-###
+#####################################
+# Configuration of BGP peer follows #
+#####################################
 
-### AS64501 - Client 1 - SR OS
+### AS64501 - Client 1 - FRR ###
 protocol bgp AS64501 from PEERS {
   description "Client 1";
   neighbor 192.168.0.1 as 64501;
   ipv4 {
     import all;
     export where bgp_out(64501);
+  };
+}
+
+### AS64502 - Client 2 - FRR ###
+protocol bgp AS64502 from PEERS {
+  description "Client 2";
+  neighbor 192.168.0.2 as 64502;
+  ipv4 {
+    import none;
+    export none;
   };
 }
 ```

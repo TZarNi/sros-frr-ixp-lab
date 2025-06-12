@@ -203,6 +203,11 @@ $\small{\textsf{IX နဲ့ ချိတ်ဆက်မယ့် peer မျာ
 | 9654:64503      | Advertise to Akamai           |
 ```
 ## Function
+$\small{\textsf{အောက်ပါ setup အတွက် BIRD function ကို သုံးပြီး config လုပ်ကြည့်မယ်။}}$<br>
++ $\small{\textsf{clab-ixp-peer1 သည် clab-ixp-peer2 နဲ့ peer ဖြစ်ချင်တယ်။}}$<br>
++ $\small{\textsf{clab-ixp-peer2 သည် akamai နဲ့ peer ဖြစ်ချင်တယ်။}}$<br>
++ $\small{\textsf{clab-ixp-peer3 သည် clab-ixp-peer1, clab-ixp-peer2, akamai အားလုံးနဲ့ peer ဖြစ်ချင်တယ်။}}$<br>
+
 $\small{\textsf{BIRD config}}$
 ```yaml
 ############
@@ -247,9 +252,6 @@ $\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into 
 $\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$
 
 $\small{\textsf{clab-ixp-peer1 (AS64501) config}}$
-$\small{\textsf{clab-ixp-peer1 သည် clab-ixp-peer2 နဲ့ peer လုပ်ချင်တယ်။}}$
-$\small{\textsf{clab-ixp-peer2 သည် akamai နဲ့ peer လုပ်ချင်တယ်။}}$
-$\small{\textsf{clab-ixp-peer3 သည် clab-ixp-peer1, clab-ixp-peer2, akamai အားလုံးနဲ့ peer လုပ်ချင်တယ်။}}$
 ```yaml
 route-map rmap permit 10
 match ip address prefix-list pl1

@@ -292,7 +292,7 @@ C>* 192.168.0.0/24 is directly connected, eth1, 00:00:45
 bird> show route
 Table master4:
 10.0.0.1/32          unicast [AS64501 14:45:33.846] * (100) [AS64501i]
-	via 192.168.0.1 on eth1
+         via 192.168.0.1 on eth1
 
 ```
 $\small{\textsf{RTS BGP:}}$

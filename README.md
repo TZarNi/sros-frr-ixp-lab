@@ -258,8 +258,8 @@ protocol bgp AS64501 from PEERS {
   };
 }
 ```
-$\small{\textsf{RTS_BGP:}}$
-$\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS_BGP, BIRD knows that the route was received from another BGP router.}}$
+$\small{\textsf{RTS BGP:}}$
+$\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$
 
 ## filter
 

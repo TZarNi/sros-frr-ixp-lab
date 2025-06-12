@@ -307,6 +307,13 @@ Table master4:
 $\small{\textsf{သတ်မှတ်ထားတဲ့ function အရ BIRD က အောက်ပါအတိုင်း လုပ်ဆောင်တယ်။}}$
 + $\small{\textsf{ AS64502 က route အားလုံးကို main table သို့ import လုပ်တယ်။}}$
 
-
+## Reference
+```yaml
+https://bird.network.cz/?get_doc&f=bird.html&v=20
+https://github.com/fingon/bird-ext-lsa/blob/master/doc/bird.conf.example
+https://gist.github.com/tonusoo/005d9ae8fe24432c733be8f12785ee9c
+https://indico.csnog.eu/event/1/contributions/22/attachments/18/29/Ondrej_Filip.pdf
+https://docs.frrouting.org/en/stable-7.2/bgp.html
+```
 
 

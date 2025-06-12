@@ -3,7 +3,7 @@ $\small{\textsf{A containerlab-based lab designed to offer hands-on experience w
 
 $\small{\textsf{Nokia sr os မှာ license file အခက်အခဲကြောင့် FRR ကိုပဲ အသုံးပြုထားတယ်။}}$
 
-$\small{\textsf{BIRD config ကို focus လုပ်ချင်တာမို့ လောလောဆယ် openbgpd ကို comment လုပ်ထားတယ်။}}$
+$\small{\textsf{BIRD config ကို focus လုပ်ချင်တာမို့ လောလောဆယ် openbgpd ကို ခဏဖယ်ထားတယ်။}}$
 
 $\small{\textsf{Lab documentation is available at below link}}$
 ```yaml

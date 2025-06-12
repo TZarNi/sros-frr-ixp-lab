@@ -118,7 +118,7 @@ protocol bgp AS64502 from PEERS {
 ```
 + $\small{\textsf{In a BIRD configuration, protocol device {} is a crucial section that doesn't define a routing protocol itself,}}$
   $\small{\textsf{but rather serves as a service to gather information about network interfaces from the kernel.}}$ 
-+ $\small{\textsf{initial bird config မှာ import all, export all သတ်မှတ်ထားတာကြောင့် peer ၂ ခုကြား route တွေအားလုံး ဖလှယ်ထားတာ တွေ့ရမယ်။}}$
++ $\small{\textsf{bird config မှာ import all, export all သတ်မှတ်ထားတာကြောင့် peer ၂ ခုကြား route တွေအားလုံး ဖလှယ်ထားတာ တွေ့ရမယ်။}}$
 
 $\small{\textsf{Checking BGP routes}}$
 
@@ -179,6 +179,8 @@ protocol bgp AS64502 from PEERS {
   };
 }
 ```
++ $\small{\textsf{bird config မှာ import none, export none သတ်မှတ်ထားတာကြောင့် peer ၂ ခုကြား ဖလှယ်ထားတဲ့ route တစ်ခုမှမရှိတာ တွေ့ရမယ်။}}$
+
 ## BIRD Architecture
 
 $\small{\textsf{bird version 2.0 user manual ကို ရည်ညွှန်းပြီး လုပ်ဆောင်မယ်။}}$

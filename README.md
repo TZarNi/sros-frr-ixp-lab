@@ -189,7 +189,8 @@ $\small{\textsf{The heart of BIRD is a routing table. BIRD has several independe
 $\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
 $\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
 
-## Supported Communities
+## Communities
+$\small{\textsf{IX နဲ့ ချိတ်ဆက်မယ့် peer များသည် အောက်ပါ community များကို အသုံးပြုနိုင်တယ်လို့ သတ်မှတ်ထားတယ် ဆိုပါစို့။}}$
 ```yaml
 |   Community     | Action                        |
 |-----------------|-------------------------------|
@@ -199,7 +200,7 @@ $\small{\textsf{These routing tables are not kernel forwarding tables. No forwar
 | 64503:64503     | Advertise to all peers        |
 | 9654:64503      | Advertise to Akamai           |
 ```
-## Function to filter routes
+## Function
 $\small{\textsf{AS64501}}$
 ```yaml
 ############

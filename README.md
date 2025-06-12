@@ -241,7 +241,15 @@ protocol bgp AS64502 from PEERS {
   };
 }
 ```
-$\small{\textsf{AS64501 config}}$
+$\small{\textsf{RTS BGP:}}$
+$\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$
+$\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into BIRD's internal routing table.}}$
+$\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$
+
+$\small{\textsf{clab-ixp-peer1 (AS64501) config}}$
+$\small{\textsf{clab-ixp-peer1 သည် clab-ixp-peer2 နဲ့ peer လုပ်ချင်တယ်။}}$
+$\small{\textsf{clab-ixp-peer2 သည် akamai နဲ့ peer လုပ်ချင်တယ်။}}$
+$\small{\textsf{clab-ixp-peer3 သည် clab-ixp-peer1, clab-ixp-peer2, akamai အားလုံးနဲ့ peer လုပ်ချင်တယ်။}}$
 ```yaml
 route-map rmap permit 10
 match ip address prefix-list pl1
@@ -293,14 +301,7 @@ bird> show route
 Table master4:
 10.0.0.1/32          unicast [AS64501 14:45:33.846] * (100) [AS64501i]
          via 192.168.0.1 on eth1
-
 ```
-$\small{\textsf{RTS BGP:}}$
-$\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$
-$\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into BIRD's internal routing table.}}$
-$\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$
-$\small{\textsf{Filters are used to control both import and export of routes.}}$ 
-
 $\small{\textsf{သတ်မှတ်ထားတဲ့ function အရ BIRD က အောက်ပါအတိုင်း လုပ်ဆောင်တယ်။}}$
 + $\small{\textsf{ AS64502 က route အားလုံးကို main table သို့ import လုပ်တယ်။}}$
 

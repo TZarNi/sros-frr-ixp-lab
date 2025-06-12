@@ -76,6 +76,16 @@ docker exec -it clab-ixp-peer1 vtysh
 docker exec -it clab-ixp-peer2 vtysh
 docker exec -it clab-ixp-rs2 birdc
 ```
+## BIRD Architecture
+
+$\small{\textsf{bird version 2.0 user manual ကို ရည်ညွှန်းပြီး လုပ်ဆောင်မယ်။}}$
+```yaml
+https://bird.network.cz/?get_doc&f=bird.html&v=20
+```
+$\small{\textsf{The heart of BIRD is a routing table. BIRD has several independent routing tables; each of them contains routes of exactly one nettype.}}$
+$\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
+$\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
+
 ## BIRD Config
 $\small{\textsf{import all, export all}}$
 ```yaml
@@ -181,16 +191,6 @@ protocol bgp AS64502 from PEERS {
 ```
 + $\small{\textsf{bird config မှာ import none, export none သတ်မှတ်ထားတာကြောင့် peer ၂ ခုကြား ဖလှယ်ထားတဲ့ route တစ်ခုမှမရှိတာ တွေ့ရမယ်။}}$
 
-## BIRD Architecture
-
-$\small{\textsf{bird version 2.0 user manual ကို ရည်ညွှန်းပြီး လုပ်ဆောင်မယ်။}}$
-```yaml
-https://bird.network.cz/?get_doc&f=bird.html&v=20
-```
-$\small{\textsf{The heart of BIRD is a routing table. BIRD has several independent routing tables; each of them contains routes of exactly one nettype.}}$
-$\small{\textsf{There are two default tables -- master4 for IPv4 routes and master6 for IPv6 routes. Other tables must be explicitly configured.}}$
-$\small{\textsf{These routing tables are not kernel forwarding tables. No forwarding is done by BIRD.}}$
-
 ## Communities
 $\small{\textsf{IX နဲ့ ချိတ်ဆက်မယ့် peer များသည် အောက်ပါ community များကို အသုံးပြုနိုင်တယ်လို့ သတ်မှတ်ထားတယ် ဆိုပါစို့။}}$
 ```yaml
@@ -246,6 +246,7 @@ $\small{\textsf{This RTS indicates that the route was learned from a BGP neighbo
 $\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into BIRD's internal routing table.}}$
 $\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$
 $\small{\textsf{Filters are used to control both import and export of routes.}}$ 
++ $\small{\textsf{function အရ community တန်ဖိုးမပါတဲ့ route တွေကို import export မလုပ်တာ တွေ့ရတယ်။}}$
 
 ## filter
 

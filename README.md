@@ -1,8 +1,9 @@
 # IXP Lab (FRR and BIRD as Route Servers)
+$\small{\textsf{A containerlab-based lab designed to offer hands-on experience with IXP technologies and best practices.}}$
 
 $\small{\textsf{Nokia sr os မှာ license file အခက်အခဲကြောင့် FRR ကိုပဲ အသုံးပြုထားတယ်။}}$
 
-$\small{\textsf{A containerlab-based lab designed to offer hands-on experience with IXP technologies and best practices.}}$
+$\small{\textsf{BIRD config ကို focus လုပ်ချင်တာမို့ လောလောဆယ် openbgpd ကို comment လုပ်ထားတယ်။}}$
 
 $\small{\textsf{Lab documentation is available at below link}}$
 ```yaml
@@ -38,13 +39,6 @@ topology:
       binds:
         - configs/frr2.conf:/etc/frr/frr.conf
         - configs/frr-daemons.cfg:/etc/frr/daemons
-    rs1: # route server #1
-      kind: linux
-      image: quay.io/openbgpd/openbgpd:7.9
-      binds:
-        - configs/openbgpd.conf:/etc/bgpd/bgpd.conf
-      exec:
-        - "ip address add dev eth1 192.168.0.3/24"
     rs2: # route server #2
       kind: linux
       image: ghcr.io/srl-labs/bird:2.13
@@ -58,33 +52,28 @@ topology:
   links:
     - endpoints: ["peer1:eth1", "ixp-net:port1"]
     - endpoints: ["peer2:eth1", "ixp-net:port2"]
-    - endpoints: ["rs1:eth1", "ixp-net:port3"]
     - endpoints: ["rs2:eth1", "ixp-net:port4"]
 ```
 $\small{\textsf{Start the lab}}$
 ```yaml
 containerlab deploy --topo ixp.clab.yml
-╭────────────────┬───────────────────────────────┬────────────────────┬───────────────────╮
-│      Name      │           Kind/Image          │        State       │   IPv4/6 Address  │
-├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-peer1 │ linux                         │ running            │ 172.20.20.5       │
-│                │ quay.io/frrouting/frr:8.4.1   │                    │ 3fff:172:20:20::5 │
-├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-peer2 │ linux                         │ running            │ 172.20.20.4       │
-│                │ quay.io/frrouting/frr:8.4.1   │                    │ 3fff:172:20:20::4 │
-├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-rs1   │ linux                         │ running            │ 172.20.20.3       │
-│                │ quay.io/openbgpd/openbgpd:7.9 │ (health: starting) │ 3fff:172:20:20::3 │
-├────────────────┼───────────────────────────────┼────────────────────┼───────────────────┤
-│ clab-ixp-rs2   │ linux                         │ running            │ 172.20.20.2       │
-│                │ ghcr.io/srl-labs/bird:2.13    │                    │ 3fff:172:20:20::2 │
-╰────────────────┴───────────────────────────────┴────────────────────┴───────────────────╯
+╭────────────────┬─────────────────────────────┬─────────┬───────────────────╮
+│      Name      │          Kind/Image         │  State  │   IPv4/6 Address  │
+├────────────────┼─────────────────────────────┼─────────┼───────────────────┤
+│ clab-ixp-peer1 │ linux                       │ running │ 172.20.20.3       │
+│                │ quay.io/frrouting/frr:8.4.1 │         │ 3fff:172:20:20::3 │
+├────────────────┼─────────────────────────────┼─────────┼───────────────────┤
+│ clab-ixp-peer2 │ linux                       │ running │ 172.20.20.2       │
+│                │ quay.io/frrouting/frr:8.4.1 │         │ 3fff:172:20:20::2 │
+├────────────────┼─────────────────────────────┼─────────┼───────────────────┤
+│ clab-ixp-rs2   │ linux                       │ running │ 172.20.20.4       │
+│                │ ghcr.io/srl-labs/bird:2.13  │         │ 3fff:172:20:20::4 │
+╰────────────────┴─────────────────────────────┴─────────┴───────────────────╯
 ```
 $\small{\textsf{node တွေကို access လုပ်ဖို့}}$
 ```yaml
 docker exec -it clab-ixp-peer1 vtysh
 docker exec -it clab-ixp-peer2 vtysh
-docker exec -it clab-ixp-rs1 ash
 docker exec -it clab-ixp-rs2 birdc
 ```
 ## BIRD Config
@@ -95,20 +84,20 @@ define myas = 64503;
 
 protocol device { }
 
-####
-# Protocol template
-###
+#####################
+# Protocol template #
+#####################
 template bgp PEERS {
   local as myas;
   rs client;
 }
 
 
-####
-# Configuration of BGP peer follows
-###
+#############################
+# Configuration of BGP peer #
+#############################
 
-### AS64501 - Client 1 - SR OS
+### AS64501 - Client 1 - FRR ###
 protocol bgp AS64501 from PEERS {
   description "Client 1";
   neighbor 192.168.0.1 as 64501;
@@ -117,9 +106,7 @@ protocol bgp AS64501 from PEERS {
     export all;
   };
 }
-
-
-### AS64502 - Client 2 - FRR
+### AS64502 - Client 2 - FRR ###
 protocol bgp AS64502 from PEERS {
   description "Client 2";
   neighbor 192.168.0.2 as 64502;
@@ -148,7 +135,7 @@ $\small{\textsf{clab-ixp-rs2}}$
 bird> show status 
 bird> show route
 bird> show protocol
-bird> show route protocol AS64501
+bird> show route protocol AS64501 # to check received routes from AS64501
 bird> show route protocol AS64502
 ```
 
@@ -199,6 +186,9 @@ protocol bgp AS64501 from PEERS {
 ```
 $\small{\textsf{RTS BGP:}}$
 $\small{\textsf{This RTS indicates that the route was learned from a BGP neighbor. When a route has RTS BGP, BIRD knows that the route was received from another BGP router.}}$
+$\small{\textsf{Import refers to routes flowing from a protocol (like BGP) into BIRD's internal routing table.}}$
+$\small{\textsf{Export refers to routes flowing from BIRD's routing table into a protocol.}}$
+$\small{\textsf{Filters are used to control both import and export of routes.}}$ 
 
 ## filter
 

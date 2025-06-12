@@ -156,7 +156,6 @@ template bgp PEERS {
   rs client;
 }
 
-
 #############################
 # Configuration of BGP peer #
 #############################

@@ -323,7 +323,6 @@ bird> show status
 bird> show route
 bird> show protocol
 bird> show route protocol AS64501 # to check received routes from AS64501
-bird> show route protocol AS64502
 bird> show route filter export_filter_64510
 ```
 ## Reference

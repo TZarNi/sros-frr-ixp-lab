@@ -1,4 +1,4 @@
-# IXP Lab (FRR and BIRD as Route Servers)
+# IXP Lab (FRR and BIRD as Route Server)
 $\small{\textsf{A containerlab-based lab designed to offer hands-on experience with IXP route distributing using bgp community and filter.}}$
 
 $\small{\textsf{Nokia sr os မှာ license file အခက်အခဲကြောင့် FRR ကိုပဲ အသုံးပြုထားတယ်။}}$
